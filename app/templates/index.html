@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>360&deg; Image Gallery</title>
+    <meta name="description" content="360&deg; Image Gallery - A-Frame">
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-layout-component@5.3.0/dist/aframe-layout-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-proxy-event-component@2.1.0/dist/aframe-proxy-event-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar.js"></script>
+<script>
+  AFRAME.registerComponent('listener_obj', {
+  init: function() {
+    this.el.addEventListener('mouseenter', (e) => {
+      var objectid = this.el.id;
+      if (objectid=="object1")
+      {
+            document.getElementById("objects").object3D.visible = true;
+            var entity = document.getElementById("sound1");
+            entity.components.sound.playSound();
+      }
+
+      if (objectid=="object2")
+      {
+            document.getElementById("objects2").object3D.visible = true;
+            var entity = document.getElementById("sound2");
+            entity.components.sound.playSound();
+      }
+
+      if (objectid=="object3")
+      {
+            document.getElementById("objects3").object3D.visible = true;
+            var entity = document.getElementById("sound3");
+            entity.components.sound.playSound();
+      }
+
+    })
+    this.el.addEventListener('mouseleave', (e) => {
+      document.getElementById("objects").object3D.visible = false;
+      document.getElementById("objects2").object3D.visible = false;
+      document.getElementById("objects3").object3D.visible = false;
+    })
+  }
+})
+</script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="city" src="static/land.jpg">
+        <img id="star" src="static/star.png">
+        <audio id="sounda" src="static/olive_tree.mp3" preload="auto"></audio>
+        <audio id="soundb" src="static/almond_tree.mp3" preload="auto"></audio>
+        <audio id="soundc" src="static/pink_grass.mp3" preload="auto"></audio>
+        <img id="almond_desc" src="static/almond_tree.jpg">
+        <img id="olive_desc" src="static/olive_desc.jpg">
+        <img id="pink_desc" src="static/pink_desc.jpg">
+      </a-assets>
+
+      <!-- 360-degree image. -->
+      <a-sky id="image-360" radius="15" src="#city"></a-sky>
+  
+      <!-- Button . -->
+      <a-entity id="object1" listener_obj position="-9 2 0" rotation="0 90 0">
+        <a-image  class="link" src="#star" width="1"></a-image>
+      </a-entity>
+
+      <a-entity id="object2" listener_obj position="9 0 -3" rotation="0 90 0">
+        <a-image  class="link" src="#star" width="1" ></a-image>
+      </a-entity>
+
+      <a-entity id="object3" listener_obj position="0 -2 -8" rotation="0 0 0">
+        <a-image  class="link" src="#star" width="1"></a-image>
+      </a-entity>
+
+      <!-- Sound object -->
+      <a-entity sound="src: #sounda" id="sound1"></a-entity>
+      <a-entity sound="src: #soundb" id="sound2"></a-entity>
+      <a-entity sound="src: #soundc" id="sound3"></a-entity>
+
+      <!-- object show. -->
+      <a-entity id="objects" visible="true"  position="-4 2 0" rotation="0 90 0">
+        <a-image  id="desc" src="#olive_desc" width="2" geometry="primitive: plane; height: 1; width: 2"></a-image>
+      </a-entity>
+
+      <a-entity id="objects2" visible="true" position="4 1 -1" rotation="0 -70 0">
+        <a-image  id="desc" src="#almond_tree" width="2" geometry="primitive: plane; height: 1; width: 2"></a-image>
+      </a-entity>
+
+      <a-entity id="objects3" visible="false" position="0 -2 -3" rotation="-10 0 0">
+        <a-image  id="desc" src="#pink_desc" width="2" geometry="primitive: plane; height: 1; width: 2"></a-image>
+      </a-entity>
+
+      <!-- Camera + cursor. -->
+      <a-entity camera look-controls>
+        <a-cursor
+          id="cursor"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+          animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+          event-set__mouseenter="_event: mouseenter; color: springgreen"
+          event-set__mouseleave="_event: mouseleave; color: black"
+          raycaster="objects: .link"></a-cursor>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
